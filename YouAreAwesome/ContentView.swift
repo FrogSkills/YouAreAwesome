@@ -10,9 +10,10 @@ import SwiftUI
 struct ContentView: View {
     @State private var message = ""
     @State private var imageName = ""
-    let animalPictures = ["image0", "image1", "image2","image3", "image4", "image5","image6", "image7", "image8"]
+    @State private var imageNumber = 0
+    @State private var messageNumber = 0
     
-    let motivationalMessages = ["You are Awesome!", "You are Great!", "You are Amazing", "You can do it!", "When the genius bar needs hep they call you!"]
+    
     @State private var incrementingMessage = 0
     
     
@@ -40,22 +41,29 @@ struct ContentView: View {
             Spacer()
                 
                 Button("Show Message!") {
+                    
+                    let messages = ["You are Awesome!", "You are Great!", "You are Amazing", "You can do it!", "When the genius bar needs hep they call you!"]
+                    
 //                    let message1 = "You are Awesome!"
 //                    let message2 = "You are Great!"
 //                    message = (message == message1 ? message2 : message1)
-                    message = motivationalMessages[incrementingMessage]
-                    if incrementingMessage != (motivationalMessages.count - 1) {
+                    message = messages[incrementingMessage]
+                    if incrementingMessage != (messages.count - 1) {
                         incrementingMessage += 1
                     } else {
                         incrementingMessage = 0
                     }
-                    print(/*motivationalMessages[incrementingMessage]*/
-                        motivationalMessages[.random(in: 0...motivationalMessages.count-1)])
-                    imageName = animalPictures[.random(in: 0...8)]
+                    
+                    
+                    print(/*messages[incrementingMessage]*/
+                        messages[.random(in: 0...messages.count-1)])
+                    
+                    
+                    
+                    imageName = "image\(Int.random(in: 0...8))"
                 }
                 
             .buttonStyle(.borderedProminent)
-            .fontWeight(.ultraLight)
             .font(.title2)
         }
         .padding()
