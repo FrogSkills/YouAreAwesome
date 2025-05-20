@@ -48,6 +48,13 @@ struct ContentView: View {
                 Text("Sound")
                 Toggle("", isOn: $soundIsOn)
                     .labelsHidden()
+                    .onChange(of: soundIsOn) {
+                        if audioPlayer.isPlaying {
+                            audioPlayer.stop()
+                        }
+                    }
+                
+                Spacer()
                 
                 Button("Show Message!") {
                     
@@ -56,23 +63,29 @@ struct ContentView: View {
                     
                     
                     lastMessageNumber = nonRepeatingRandom(lastNumber: lastMessageNumber, upperBounds: messages.count-1)
-                    message = messages[lastMessageNumber]
+//                    message = messages[lastMessageNumber]
                     
                     lastImageNumber = nonRepeatingRandom(lastNumber: lastImageNumber, upperBounds: numberOfImages-1)
                     imageName = "image\(lastImageNumber)"
                     
                     lastSoundNumber = nonRepeatingRandom(lastNumber: lastSoundNumber, upperBounds: numberOfSounds-1)
-                    playSound(soundName: "sound\(lastSoundNumber)")
-                    
-                    
+                    if soundIsOn {
+                        playSound(soundName: "sound\(lastSoundNumber)")
+                    }
                 }
-                
                 .buttonStyle(.borderedProminent)
                 .font(.title2)
             }
         }
         .padding()
     }
+    func nonRepeatingRandom (lastNumber: Int, upperBounds: Int) -> Int {
+           var newNumber : Int
+           repeat {
+               newNumber = Int.random(in: 0...upperBounds)
+           } while newNumber == lastNumber
+           return lastNumber
+       }
     
     func playSound (soundName: String) {
         guard let soundFile = NSDataAsset(name: soundName) else {
@@ -85,15 +98,10 @@ struct ContentView: View {
             audioPlayer.play()
         } catch {
             print("😡 ERROR. \(error.localizedDescription) creating audioPlayer")
-        }}
-    
-    func nonRepeatingRandom (lastNumber: Int, upperBounds: Int) -> Int {
-        var newNumber : Int
-        repeat {
-            newNumber = Int.random(in: 0...upperBounds)
-        } while newNumber == lastNumber
-        return lastNumber
+        }
     }
+    
+   
 }
 
 #Preview {
