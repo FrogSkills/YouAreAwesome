@@ -16,9 +16,9 @@ struct ContentView: View {
     @State private var lastSoundNumber = -1
 
     @State private var audioPlayer: AVAudioPlayer!
-    
-    let numberOfImages = 8
-    let numberOfSounds = 5
+    @State private var soundIsOn = true
+    let numberOfImages = 10
+    let numberOfSounds = 6
     
     
     var body: some View {
@@ -31,7 +31,7 @@ struct ContentView: View {
                 .frame(height: 100)
                 .minimumScaleFactor(0.5)
                 .animation(.easeInOut(duration: 0.15), value: message)
-
+            
             Spacer()
             
             Image(imageName)
@@ -43,15 +43,16 @@ struct ContentView: View {
             
             
             Spacer()
+            
+            HStack {
+                Text("Sound")
+                Toggle("", isOn: $soundIsOn)
+                    .labelsHidden()
                 
                 Button("Show Message!") {
                     
                     let messages = ["You are Awesome!", "You are Great!", "You are Amazing", "You can do it!", "When the genius bar needs hep they call you!"]
                     
-//                    let message1 = "You are Awesome!"
-//                    let message2 = "You are Great!"
-//                    message = (message == message1 ? message2 : message1)
-//                    message = messages[incrementingMessage]
                     
                     
                     lastMessageNumber = nonRepeatingRandom(lastNumber: lastMessageNumber, upperBounds: messages.count-1)
@@ -63,11 +64,12 @@ struct ContentView: View {
                     lastSoundNumber = nonRepeatingRandom(lastNumber: lastSoundNumber, upperBounds: numberOfSounds-1)
                     playSound(soundName: "sound\(lastSoundNumber)")
                     
-
+                    
                 }
                 
-            .buttonStyle(.borderedProminent)
-            .font(.title2)
+                .buttonStyle(.borderedProminent)
+                .font(.title2)
+            }
         }
         .padding()
     }
