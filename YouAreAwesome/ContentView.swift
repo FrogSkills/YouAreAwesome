@@ -31,6 +31,7 @@ struct ContentView: View {
                 .minimumScaleFactor(0.5)
                 .animation(.easeInOut(duration: 0.15), value: message)
 
+            Spacer()
             
             Image(imageName)
                 .resizable()
@@ -50,6 +51,7 @@ struct ContentView: View {
 //                    let message2 = "You are Great!"
 //                    message = (message == message1 ? message2 : message1)
 //                    message = messages[incrementingMessage]
+                    
                     
                     
                     var messagedNumber = Int.random(in: 0...messages.count-1)
@@ -73,20 +75,10 @@ struct ContentView: View {
                         soundNumber = Int.random(in: 0...5)
                     }
                     lastSoundNumber = soundNumber
-                    
                     let soundName = "sound\(soundNumber)"
-                    guard let soundFile = NSDataAsset(name: soundName) else {
-                        print("😡 Could not read file name")
-                        return
-                    }
+                    playSound(soundName: soundName)
                     
-                    do {
-                        audioPlayer = try AVAudioPlayer(data: soundFile.data)
-                        audioPlayer.play()
-                    } catch {
-                        print("😡 ERROR. \(error.localizedDescription) creating audioPlayer")
-                    }
-                    
+
                     
                     imageName = "image\(Int.random(in: 0...8))"
                 }
@@ -96,6 +88,19 @@ struct ContentView: View {
         }
         .padding()
     }
+    
+    func playSound (soundName: String) {
+        guard let soundFile = NSDataAsset(name: soundName) else {
+            print("😡 Could not read file name")
+            return
+        }
+        
+        do {
+            audioPlayer = try AVAudioPlayer(data: soundFile.data)
+            audioPlayer.play()
+        } catch {
+            print("😡 ERROR. \(error.localizedDescription) creating audioPlayer")
+        }}
 }
 
 #Preview {
